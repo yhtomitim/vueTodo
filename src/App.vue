@@ -1,17 +1,41 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <ul>
+      <li v-for = "(task, index) in taskList" v-bind:key = "task.task">
+        <p class="inline" v-bind:class="{done : task.done}">{{task.task}}</p>
+        <input v-model="task.done" type="checkbox">
+        <button v-on:click="deleteItem(index)">Finished</button>
+      </li> 
+    </ul>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      taskList: [
+        {
+          done: false,
+          task: 'Build a Vue App'
+        },
+        {
+          done: false,
+          task: 'Components!'
+        },
+        {
+          done: false,
+          task: "add in Async"
+        },
+      ]
+    }
+  },
+  methods: {
+    deleteItem(index) {
+      this.taskList.splice(index, 1)
+    }
   }
 }
 </script>
@@ -25,4 +49,19 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+ul {
+  list-style: none;
+}
+
+.inline {
+  display: inline;
+}
+
+.done {
+  /* text-decoration: line-through; */
+  color: green;
+  display: inline;
+}
+
 </style>
