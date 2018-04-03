@@ -1,21 +1,32 @@
-<template>
+]<template>
   <div id="app">
     <ul>
-      <li v-for = "(task, index) in taskList" v-bind:key = "task.task">
-        <p class="inline" v-bind:class="{done : task.done}">{{task.task}}</p>
-        <input v-model="task.done" type="checkbox">
-        <button v-on:click="deleteItem(index)">Finished</button>
-      </li> 
+      <todoItem
+      v-for = "(task, index) in taskList"
+      v-bind:key = "task.task"
+      v-bind:taskData="task">
+      </todoItem> 
     </ul>
+    <form v-on:submit.prevent="addTask">
+      <label for="">Add a new Task: <br></label>
+      <input v-model="newTask" type="text">
+      <input type="submit">
+    </form>
   </div>
 </template>
 
 <script>
+import todoItem from './components/to-doItem.vue';
 
 export default {
   name: 'app',
+  components: {
+    todoItem
+  },
+  // data() function that returns an object, really important!
   data() {
     return {
+      newTask: '',
       taskList: [
         {
           done: false,
@@ -29,12 +40,32 @@ export default {
           done: false,
           task: "add in Async"
         },
+        {
+          done: false,
+          task: "do more stuff"
+        },
+        {
+          done: true,
+          task: "don't forget this"
+        }
       ]
     }
   },
   methods: {
     deleteItem(index) {
       this.taskList.splice(index, 1)
+    },
+    addTask() {
+      // take the value at key newTask, passed in param
+       // add the value of done as false
+       let taskItem = {
+        done: false,
+        task: this.newTask
+      }
+      // add it to the taskList array
+      this.taskList.push(taskItem);
+      // clears the form
+      this.newTask = '';
     }
   }
 }
@@ -59,7 +90,7 @@ ul {
 }
 
 .done {
-  /* text-decoration: line-through; */
+  text-decoration: line-through;
   color: green;
   display: inline;
 }
